@@ -13,6 +13,7 @@ go run ./cmd/barcode-reader -img path/to/photo.jpg
 The decoder will attempt several preprocessing steps and handle images rotated at
 0°, 90°, 180° and 270°.
 
+
 ## Development
 
 Run `go mod tidy` to download dependencies. Ensure OpenCV is installed for gocv
