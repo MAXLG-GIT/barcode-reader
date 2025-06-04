@@ -5,6 +5,7 @@ It uses the [imaging](https://github.com/disintegration/imaging) library for ima
 rotation and the [ZBar](https://github.com/ZBar/ZBar) utility `zbarimg` to decode
 the barcode data.
 
+
 ## Usage
 
 ```
@@ -19,4 +20,3 @@ several rotations (0°, 90°, 180°, 270°) to improve recognition.
 
 Run `go mod tidy` to download dependencies. Install the `zbar-tools` package so
 that the `zbarimg` command can be invoked.
-
