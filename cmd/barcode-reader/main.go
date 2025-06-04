@@ -1,11 +1,11 @@
 package main
 
 import (
+	"barcode-reader/barcode"
 	"fmt"
 	"log"
 	"os"
 	"path/filepath"
-	"barcode-reader/barcode"
 )
 
 func main() {
