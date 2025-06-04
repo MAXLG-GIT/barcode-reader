@@ -7,12 +7,12 @@ It relies on [gocv](https://gocv.io) for basic image operations and uses the
 ## Usage
 
 ```
-go run ./cmd/barcode-reader
+go run ./cmd/barcode-reader -img path/to/photo.jpg
 ```
 
-The program reads all `.jpg` files from the `tmp` directory in the project root
-and prints each filename with the decoded barcode text. The decoder attempts
-several rotations (0°, 90°, 180°, 270°) to improve recognition.
+The decoder will attempt several preprocessing steps and handle images rotated at
+0°, 90°, 180° and 270°.
+
 
 ## Development
 

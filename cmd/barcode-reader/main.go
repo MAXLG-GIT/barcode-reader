@@ -5,7 +5,6 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-
 	"barcode-reader/barcode"
 )
 
