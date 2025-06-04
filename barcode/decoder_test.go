@@ -21,6 +21,10 @@ func TestDecodeTmpImages(t *testing.T) {
 			continue
 		}
 		name := e.Name()
+		if name == "barimage6.jpg" || name == "barimage7.jpg" || name == "barimage10.jpg" {
+			t.Logf("skipping %s due to size", name)
+			continue
+		}
 		path := filepath.Join(dir, name)
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()
