@@ -1,0 +1,7 @@
+# Ignore vendor directory and build artifacts
+vendor/
+*.exe
+*.dll
+*.so
+*.dylib
+*.test

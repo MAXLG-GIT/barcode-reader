@@ -20,3 +20,9 @@ several rotations (0°, 90°, 180°, 270°) to improve recognition.
 
 Run `go mod tidy` to download dependencies. Install the `zbar-tools` package so
 that the `zbarimg` command can be invoked.
+
+Run tests with:
+
+```
+go test -v ./...
+```
