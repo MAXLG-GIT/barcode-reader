@@ -3,34 +3,33 @@ package barcode
 import (
 	"bytes"
 	"fmt"
+	"image"
 	"os"
 	"os/exec"
 	"strings"
 
-	"gocv.io/x/gocv"
+
+	"github.com/disintegration/imaging"
 )
 
 // DecodeCode128FromFile attempts to decode a CODE128 barcode from the image at the given path.
 // It rotates the image in several orientations to improve detection.
 func DecodeCode128FromFile(path string) (string, error) {
-	img := gocv.IMRead(path, gocv.IMReadColor)
-	if img.Empty() {
-		return "", fmt.Errorf("cannot read image %s", path)
+	img, err := imaging.Open(path)
+	if err != nil {
+		return "", fmt.Errorf("cannot read image %s: %w", path, err)
 	}
-	defer img.Close()
 
-	rotations := []gocv.RotateFlag{
-		gocv.RotateNone,
-		gocv.Rotate90Clockwise,
-		gocv.Rotate180Clockwise,
-		gocv.Rotate90CounterClockwise,
+	rotations := []func(image.Image) *image.NRGBA{
+		imaging.Clone,
+		imaging.Rotate90,
+		imaging.Rotate180,
+		imaging.Rotate270,
 	}
 
 	for _, rot := range rotations {
-		rimg := gocv.NewMat()
-		gocv.Rotate(img, &rimg, rot)
+		rimg := rot(img)
 		text, err := decodeWithZbar(rimg)
-		rimg.Close()
 		if err == nil && text != "" {
 			return text, nil
 		}
@@ -39,16 +38,16 @@ func DecodeCode128FromFile(path string) (string, error) {
 }
 
 // decodeWithZbar saves the Mat to a temporary PNG and invokes zbarimg to decode it.
-func decodeWithZbar(m gocv.Mat) (string, error) {
+func decodeWithZbar(img image.Image) (string, error) {
 	tmp, err := os.CreateTemp("", "barcode-*.png")
 	if err != nil {
 		return "", err
 	}
 	fname := tmp.Name()
 	tmp.Close()
-	if ok := gocv.IMWrite(fname, m); !ok {
+	if err := imaging.Save(img, fname); err != nil {
 		os.Remove(fname)
-		return "", fmt.Errorf("failed to write temp image")
+		return "", fmt.Errorf("failed to write temp image: %w", err)
 	}
 	defer os.Remove(fname)
 
